@@ -1,0 +1,196 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["academic_schema"]
+}
+
+enum TaskState {
+  PENDING
+  SUBMITTED
+  GRADED
+
+  @@schema("academic_schema")
+}
+
+enum Grades {
+  PRIMERO
+  SEGUNDO
+  TERCERO
+  CUARTO
+  QUINTO
+  SEXTO
+
+  @@schema("academic_schema")
+}
+
+enum AttendanceState {
+  PRESENT
+  ABSENT
+  EXCUSED
+
+  @@schema("academic_schema")
+}
+
+// Define los modelos para el sistema academico 
+
+model AcademicPeriod {
+  period_id  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String
+  start_date DateTime
+  end_date   DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  //Relacion uno a muchos con Assignment
+  assignments Assignment[]
+  //Relacion uno a muchos con Course
+  courses     Course[]
+  //Relacion uno a muchos con Section
+  sections    Section[]
+  //Relacion uno a muchos con Attendance
+  attendances Attendance[]
+
+  @@schema("academic_schema")
+}
+
+model Course {
+  course_id   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  description String?
+  period_id   String   @db.Uuid
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  //Relacion uno a muchos con Session
+  sessions       Session[]
+  //Relacion uno a muchos con Assignment
+  assignments    Assignment[]
+  //Relacion muchos a uno con AcademicPeriod
+  academicPeriod AcademicPeriod @relation(fields: [period_id], references: [period_id])
+
+  @@schema("academic_schema")
+}
+
+model Section {
+  id_section String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_period  String   @db.Uuid
+  name       String
+  grade      Grades
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  // Relacion uno a muchos con Assignment
+  assignments    Assignment[]
+  // elacion muchos a uno con AcademicPeriod
+  academicPeriod AcademicPeriod @relation(fields: [id_period], references: [period_id])
+
+  @@schema("academic_schema")
+}
+
+model Session {
+  session_id String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  course_id  String   @db.Uuid
+  name       String
+  start_time DateTime
+  end_time   DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  //Relacion uno a muchos con Attendance
+  attendances Attendance[]
+  //Relacion uno a muchos con Material
+  materials   Material[]
+  //Relacion uno a muchos con Task
+  tasks       Task[]
+
+  //Relacion muchos a uno con Course
+  course Course @relation(fields: [course_id], references: [course_id])
+
+  @@schema("academic_schema")
+}
+
+model Material {
+  material_id String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id  String   @db.Uuid
+  title       String
+  file_type   String
+  file_url    String
+  description String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  session Session @relation(fields: [session_id], references: [session_id])
+
+  @@schema("academic_schema")
+}
+
+model Task {
+  task_id     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id  String   @db.Uuid
+  title       String
+  description String?
+  start_date  DateTime @default(now())
+  due_date    DateTime
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  //Relacion uno a muchos con TaskSubmission
+  task_submissions TaskSubmission[]
+  session          Session          @relation(fields: [session_id], references: [session_id])
+
+  @@schema("academic_schema")
+}
+
+model TaskSubmission {
+  submission_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  task_id       String    @db.Uuid
+  student_id    String    @db.Uuid
+  file_url      String
+  submitted_at  DateTime  @default(now())
+  note          Decimal?  @db.Decimal(4, 2)
+  comments      String?
+  state         TaskState @default(PENDING)
+
+  task Task @relation(fields: [task_id], references: [task_id])
+
+  @@schema("academic_schema")
+}
+
+model Attendance {
+  attendance_id String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id    String          @db.Uuid
+  student_id    String          @db.Uuid
+  status        AttendanceState
+  attended_at   DateTime        @default(now())
+  period_id     String          @db.Uuid
+
+  session        Session        @relation(fields: [session_id], references: [session_id])
+  academicPeriod AcademicPeriod @relation(fields: [period_id], references: [period_id])
+
+  @@schema("academic_schema")
+}
+
+model Assignment {
+  id_section  String   @db.Uuid
+  course_id   String   @db.Uuid
+  period_id   String   @db.Uuid
+  teacher_id  String   @db.Uuid
+  assigned_at DateTime @default(now())
+
+  section        Section        @relation(fields: [id_section], references: [id_section])
+  course         Course         @relation(fields: [course_id], references: [course_id])
+  academicperiod AcademicPeriod @relation(fields: [period_id], references: [period_id])
+
+  // Primary key compuesta
+  @@id([id_section, course_id, teacher_id, period_id])
+  @@schema("academic_schema")
+}
