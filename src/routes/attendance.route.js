@@ -17,35 +17,35 @@ const router = Router();
 router.get(
     '/',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
     getAttendance
   );
   
   router.get(
     '/:id',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
     getAttendanceById
   );
   
   router.post(
     '/create',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER'),
+    authorizeRoles('TEACHER'),
     createAttendance
   );
   
   router.put(
     '/:id',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER'),
+    authorizeRoles('TEACHER'),
     updateAttendance
   );
   
   router.delete(
     '/:id',
     verifyToken,
-    authorizeRoles('ADMIN'),
+    authorizeRoles('TEACHER'),
     deleteAttendance
   );
   

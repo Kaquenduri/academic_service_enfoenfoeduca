@@ -17,14 +17,14 @@ const router = Router();
 router.get(
     '/',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
     getAssignment
   );
   
   router.get(
     '/:id',
     verifyToken,  
-    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
     getAssignmentById
   );
   

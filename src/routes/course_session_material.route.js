@@ -35,14 +35,14 @@ const router = Router();
 router.get(
   '/',
   verifyToken,
-  authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+  authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
   getCourse
 );
   
 router.get(
   '/:id',
   verifyToken,
-  authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+  authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
   getCourseById
 );
 
@@ -72,14 +72,14 @@ router.delete(
 router.get(
   '/sessions',
   verifyToken,
-  authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+  authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
   getSession
 );
 
 router.get(
   '/sessions/:id',
   verifyToken,
-  authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+  authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
   getSessionById
 );
 
@@ -108,14 +108,14 @@ router.delete(
 router.get(
   '/materials',
   verifyToken,
-  authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+  authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
   getMaterial
 );
 
 router.get(
   '/materials/:id',
   verifyToken,
-  authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+  authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
   getMaterialById
 );
 

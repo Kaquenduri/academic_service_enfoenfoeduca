@@ -26,14 +26,14 @@ const router = Router();
 router.get(
     '/',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
     getTask
 );
 
 router.get(
     '/:id',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
     getTaskById
 );
 
@@ -62,21 +62,21 @@ router.delete(
 router.get(
     '/submission',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
     getTaskSubmission
 );
 
 router.get(
     '/submission/:id',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT'),
+    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
     getTaskSubmissionById
 );
 
 router.post(
     '/submission/create',
     verifyToken,
-    authorizeRoles('STUDENT', 'ADMIN'),
+    authorizeRoles('STUDENT', 'TEACHER'),
     createTaskSubmission
 );
 
@@ -90,7 +90,7 @@ router.put(
 router.delete(
     '/submission/:id',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT'),
+    authorizeRoles('STUDENT', 'TEACHER'),
     deleteTaskSubmission
 );
 export default router;
