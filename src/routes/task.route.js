@@ -40,21 +40,21 @@ router.get(
 router.post(
     '/create',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER'),
+    authorizeRoles('ADMIN', 'TEACHER','STUDENT'),
     createTask
 );
 
 router.put(
     '/:id',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER'),
+    authorizeRoles('ADMIN', 'TEACHER','STUDENT'),
     updateTask
 );
 
 router.delete(
     '/:id',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER'),
+    authorizeRoles('ADMIN', 'TEACHER','STUDENT'),
     deleteTask
 );
 
