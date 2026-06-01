@@ -76,21 +76,21 @@ router.get(
 router.post(
     '/submission/create',
     verifyToken,
-    authorizeRoles('STUDENT', 'TEACHER'),
+    authorizeRoles('STUDENT', 'TEACHER','STUDENT'),
     createTaskSubmission
 );
 
 router.put(
     '/submission/:id',
     verifyToken,
-    authorizeRoles('STUDENT', 'TEACHER'),
+    authorizeRoles('STUDENT', 'TEACHER','STUDENT'),
     updateTaskSubmission
 );
 
 router.delete(
     '/submission/:id',
     verifyToken,
-    authorizeRoles('STUDENT', 'TEACHER'),
+    authorizeRoles('STUDENT', 'TEACHER','STUDENT'),
     deleteTaskSubmission
 );
 export default router;
