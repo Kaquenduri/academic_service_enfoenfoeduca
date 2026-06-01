@@ -45,7 +45,7 @@ export const getCourseById = async (req, res) => {
         const course = await prisma.course.findUnique({
             where: { course_id: id },
             include: {
-                academicperiod: true,
+                academicPeriod: true,
                 sessions: true
             }
         }); 
