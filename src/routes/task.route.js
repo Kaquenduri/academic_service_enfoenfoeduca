@@ -22,6 +22,42 @@ import { authorizeRoles } from '../middleware/role.middleware.js';
 
 const router = Router();
 
+// Rutas para Entregas de Tareas
+router.get(
+    '/submission',
+    verifyToken,
+    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
+    getTaskSubmission
+);
+
+router.get(
+    '/submission/:id',
+    verifyToken,
+    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
+    getTaskSubmissionById
+);
+
+router.post(
+    '/submission/create',
+    verifyToken,
+    authorizeRoles('STUDENT', 'TEACHER','STUDENT'),
+    createTaskSubmission
+);
+
+router.put(
+    '/submission/:id',
+    verifyToken,
+    authorizeRoles('STUDENT', 'TEACHER','STUDENT'),
+    updateTaskSubmission
+);
+
+router.delete(
+    '/submission/:id',
+    verifyToken,
+    authorizeRoles('STUDENT', 'TEACHER','STUDENT'),
+    deleteTaskSubmission
+);
+
 // Rutas para Tareas
 router.get(
     '/',
@@ -58,40 +94,6 @@ router.delete(
     deleteTask
 );
 
-// Rutas para Entregas de Tareas
-router.get(
-    '/submission',
-    verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
-    getTaskSubmission
-);
 
-router.get(
-    '/submission/:id',
-    verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
-    getTaskSubmissionById
-);
-
-router.post(
-    '/submission/create',
-    verifyToken,
-    authorizeRoles('STUDENT', 'TEACHER','STUDENT'),
-    createTaskSubmission
-);
-
-router.put(
-    '/submission/:id',
-    verifyToken,
-    authorizeRoles('STUDENT', 'TEACHER','STUDENT'),
-    updateTaskSubmission
-);
-
-router.delete(
-    '/submission/:id',
-    verifyToken,
-    authorizeRoles('STUDENT', 'TEACHER','STUDENT'),
-    deleteTaskSubmission
-);
 export default router;
   
