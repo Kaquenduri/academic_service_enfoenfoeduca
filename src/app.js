@@ -9,6 +9,7 @@ import attendanceRoutes from './routes/attendance.route.js';
 import courseRoutes from './routes/course_session_material.route.js';
 import sectionRoutes from './routes/section.route.js';
 import taskRoutes from './routes/task.route.js';
+import taskSubmissionRoutes from './routes/task_submission.route.js';
 import { apiLimiter } from './middleware/rate_limit.js';
 
 dotenv.config();
@@ -26,6 +27,7 @@ app.use('/attendances', attendanceRoutes);
 app.use('/courses', courseRoutes);
 app.use('/sections', sectionRoutes);
 app.use('/tasks', taskRoutes);
+app.use('/submissions', taskSubmissionRoutes);
 
 const PORT = process.env.PORT || 3002;
 

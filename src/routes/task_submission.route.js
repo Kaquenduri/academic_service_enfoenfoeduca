@@ -1,14 +1,6 @@
 import { Router } from 'express';
 
 import {
-    getTask,
-    getTaskById,
-    createTask, 
-    updateTask,
-    deleteTask
-} from '../controllers/task.controller.js';
-
-import {
     getTaskSubmission,
     getTaskSubmissionById,
     createTaskSubmission, 
@@ -22,43 +14,40 @@ import { authorizeRoles } from '../middleware/role.middleware.js';
 
 const router = Router();
 
-
-// Rutas para Tareas
+// Rutas para Entregas de Tareas
 router.get(
-    '/',
+    '/submission',
     verifyToken,
     authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
-    getTask
+    getTaskSubmission
 );
 
 router.get(
-    '/:id',
+    '/submission/:id',
     verifyToken,
     authorizeRoles('ADMIN', 'TEACHER', 'STUDENT', 'PARENT','DIRECTOR'),
-    getTaskById
+    getTaskSubmissionById
 );
 
 router.post(
-    '/create',
+    '/submission/create',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER','STUDENT'),
-    createTask
+    authorizeRoles('STUDENT', 'TEACHER','STUDENT'),
+    createTaskSubmission
 );
 
 router.put(
-    '/:id',
+    '/submission/:id',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER','STUDENT'),
-    updateTask
+    authorizeRoles('STUDENT', 'TEACHER','STUDENT'),
+    updateTaskSubmission
 );
 
 router.delete(
-    '/:id',
+    '/submission/:id',
     verifyToken,
-    authorizeRoles('ADMIN', 'TEACHER','STUDENT'),
-    deleteTask
+    authorizeRoles('STUDENT', 'TEACHER','STUDENT'),
+    deleteTaskSubmission
 );
 
-
 export default router;
-  
