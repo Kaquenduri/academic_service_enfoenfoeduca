@@ -45,7 +45,29 @@ export const getAttendance = async (req, res) => {
             }
         });
 
-        res.status(200).json(attendance);
+        const resultado = await Promise.all(
+            attendance.map(async (attendance) =>{
+      
+              const responseUser = await fetch(
+                //Obtiene los datos del usuario desde el Auth Service usando el user_id del estudiante
+                process.env.AUTH_SERVICE_URL + `/auth/users/${attendance.student_id}`,
+                {
+                  method: 'GET',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                }
+              )
+              const dataUser = await responseUser.json();
+              return {
+                ...attendance,
+                student_id: dataUser,
+
+              }
+            })
+        )
+      
+        res.json(resultado);
 
     } catch (error) {
 
@@ -75,6 +97,29 @@ export const getAttendanceById = async (req, res) => {
             }
         });
 
+        // Hace una solicitud al Auth Service para obtener los datos del usuario usando el user_id del estudiante
+        const responseUserAuth = await fetch(
+            process.env.AUTH_SERVICE_URL + `/auth/users/${attendance.student_id}`,
+            {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+            }
+        )
+        // IObtenemos los datos del usuario desde el Auth Service
+        const dataUser = await responseUserAuth.json();
+    
+    
+       
+        
+        
+        // Creamos un nuevo objeto que combina la información del estudiante con la información del usuario
+        const response = {
+            ...attendance,
+            student_id: dataUser,
+        }
+
         if (!attendance) {
 
             return res.status(404).json({
@@ -83,7 +128,7 @@ export const getAttendanceById = async (req, res) => {
 
         }
 
-        res.status(200).json(attendance);
+        res.status(200).json(response);
 
     } catch (error) {
 
