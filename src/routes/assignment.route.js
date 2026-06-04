@@ -43,7 +43,7 @@ router.get(
   );
   
   router.delete(
-    '/:id',
+    '/:id_section/:course_id/:period_id/:teacher_id',
     verifyToken,
     authorizeRoles('ADMIN'),
     deleteAssignment
